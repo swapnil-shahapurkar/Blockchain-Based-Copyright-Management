@@ -1,6 +1,4 @@
-Here’s the **README.md** file with detailed project information, including explanations, steps, and visual enhancements for your project: 
 
-```markdown
 # Blockchain-Based Copyright Management System
 
 ## 📜 Project Overview
