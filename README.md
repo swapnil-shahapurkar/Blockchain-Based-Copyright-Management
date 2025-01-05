@@ -2,7 +2,7 @@
 # Blockchain-Based Copyright Management System
 
 ## 📜 Project Overview
-The **Copyright Management System** is a blockchain-based web application designed to manage and verify the ownership of digital content. This system ensures copyright protection by leveraging blockchain's immutability, providing features like getting copyrights, transferring ownership, deleting copyrights, viewing all copyrights, and verifying ownership. 
+The **Copyright Management System** is a blockchain-based web application designed to manage and verify the ownership of digital content. This system ensures copyright protection by leveraging blockchain's immutability, providing features like getting copyrights, transferring ownership, deleting copyrights, viewing all copyrights, and verifying ownership.
 
 Our project is built with **five smart contracts** that handle various operations, a robust **backend** to interact with the blockchain, and a user-friendly **frontend** for seamless interaction.
 
@@ -17,18 +17,25 @@ Our project is built with **five smart contracts** that handle various operation
 
 ---
 
+
 ## 🛠️ Technologies Used
-![Truffle](https://trufflesuite.com/img/truffle-logo-dark.svg)  
-**Truffle**: Development framework for Ethereum.  
-![Ganache](https://trufflesuite.com/img/ganache-logo.svg)  
-**Ganache**: Local Ethereum blockchain for testing and development.  
-![Metamask](https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg)  
-**Metamask**: Browser extension for managing Ethereum wallets and interacting with dApps.  
-![MongoDB](https://www.mongodb.com/assets/images/global/leaf.svg)  
-**MongoDB**: Database for storing non-sensitive project data.  
-**Mongoose**: ODM library for MongoDB.  
-**Web3.js**: Interfacing with Ethereum blockchain.  
-**HTML**, **CSS**, **JavaScript**, **Express.js**: For creating the frontend and backend of the application.
+
+### Blockchain Development
+| ![Truffle](https://trufflesuite.com/img/truffle-logo-dark.svg) | ![image](https://github.com/user-attachments/assets/f834f1cc-bc0d-40f1-a021-30d61242dc65)| ![MetaMask](https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg) | ![Web3.js](https://seeklogo.com/images/W/web3js-logo-62DEE79B50-seeklogo.com.png) |
+| :------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------: | :-------------------------------------------------------: |
+| **Truffle**: Smart contract development framework.             | **Ganache**: Local Ethereum blockchain.                                                                              | **MetaMask**: Wallet for Ethereum interaction.            | **Web3.js**: Library for blockchain interaction.          |
+
+### Frontend Development
+| <img src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg" width="200" height="200"> | <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/CSS3_logo_and_wordmark.svg" width="200" height="200"> | <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" width="200" height="200"> |
+| :-------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------: |
+| **HTML**: Markup language for structure.                                               | **CSS**: Styling language.                                                           | **JavaScript**: For interactive functionality.                                        |
+
+
+
+### Backend and Database
+| ![Express.js](https://upload.wikimedia.org/wikipedia/commons/6/64/Expressjs.png) | ![MongoDB](https://www.vectorlogo.zone/logos/mongodb/mongodb-ar21.svg) | ![Node.js](https://upload.wikimedia.org/wikipedia/commons/d/d9/Node.js_logo.svg) | ![Mongoose](https://mongoosejs.com/docs/images/mongoose5_62x30_transparent.png) |
+| :------------------------------------------------------------------------------: | :----------------------------------------------------------------------: | :----------------------------------------------------------------------------: | :-----------------------------------------------------------------------------: |
+| **Express.js**: Backend framework.                                              | **MongoDB**: Database for storing data.                                  | **Node.js**: Server environment.                                               | **Mongoose**: ODM for MongoDB.                                                 |
 
 ---
 
@@ -51,7 +58,6 @@ Our project is built with **five smart contracts** that handle various operation
 ---
 
 ## 🚀 How to Run the Project
-Follow these steps to set up and run the project:
 
 ### Prerequisites
 1. Install **Truffle** and **Ganache**:
@@ -87,25 +93,10 @@ Follow these steps to set up and run the project:
 
 ---
 
-## 🖼️ User Interface
-The web interface features a **navigation menu** that allows users to:
-- Register copyrights.
-- Transfer ownership.
-- Delete copyrights.
-- View registered copyrights.
-- Verify the authenticity of a copyright.
-
----
-
 ## 🌟 Why Blockchain for Copyright Management?
 - **Immutability**: Once registered, content details cannot be tampered with.
 - **Transparency**: Ownership is verifiable by anyone at any time.
 - **Decentralization**: No central authority; records are stored on a blockchain.
-
----
-
-## 🛡️ Testing and Security
-The system includes a `testing.js` script to validate the smart contract functionalities. Transactions are secured via Metamask integration.
 
 ---
 
@@ -115,19 +106,7 @@ View the full license [here](LICENSE).
 
 ---
 
-## 🖼️ Technology Stack Logos
-### Truffle
-![Truffle Logo](https://trufflesuite.com/img/truffle-logo-dark.svg)
-
-### Ganache
-![Ganache Logo](https://trufflesuite.com/img/ganache-logo.svg)
-
-### Metamask
-![Metamask Logo](https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg)
-
----
 
 Feel free to contribute and enhance this project! 😊
 ```
 
-This README includes everything about your project with links, technology logos, and structured information for developers and users. You can customize the images' URLs if you want to use local files or different logos. Let me know if you'd like any further modifications!
