@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cryptex Vault</title>
+    <link rel="stylesheet" href="upload.css">
+    <script>
+        let ownerAddress = '';
+
+        // Connect to Metamask
+        async function connectMetamask() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                    ownerAddress = accounts[0];
+                    localStorage.setItem('uploadOwnerAddress', ownerAddress);
+                    document.getElementById('metamask-address').innerText = `Connected: ${ownerAddress}`;
+                } catch (error) {
+                    console.error('Error connecting to Metamask:', error);
+                    alert('Could not connect to Metamask. Please try again.');
+                }
+            } else {
+                alert('Metamask is not installed. Please install it to continue.');
+            }
+        }
+
+        // Handle Image Upload Preview and Metadata
+        function handleImageUpload() {
+            const fileInput = document.getElementById('image');
+            const file = fileInput.files[0];
+
+            if (file) {
+                // Hide the upload icon
+                document.getElementById('uploadIcon').style.display = 'none';
+
+                // Display the image details and preview
+                const imageDetails = document.getElementById('imageDetails');
+                const imagePreview = document.getElementById('imagePreview');
+                const imageName = document.getElementById('imageName');
+                const imageSize = document.getElementById('imageSize');
+                const imageType = document.getElementById('imageType');
+
+                // Update metadata
+                imageDetails.style.display = 'block';
+                imageName.textContent = file.name;
+                imageSize.textContent = (file.size / 1024).toFixed(2); // Convert bytes to KB
+                imageType.textContent = file.type || 'Unknown';
+
+                // Update preview
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    imagePreview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Upload Image to Backend
+        async function uploadImage() {
+            const image = document.getElementById('image').files[0];
+
+            if (!ownerAddress) {
+                alert('Please connect to Metamask before uploading.');
+                return;
+            }
+
+            if (!image) {
+                alert('Please select an image to upload.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('owner', ownerAddress); // Automatically use Metamask address as owner
+            formData.append('image', image);
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    document.getElementById('uploadMessage').innerText = ` ${result.message}`;
+                } else {
+                    document.getElementById('uploadMessage').innerText = `Error: ${result.error}`;
+                }
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                document.getElementById('uploadMessage').innerText = 'Error uploading image.';
+            }
+        }
+
+        // Load Metamask Connection on Page Load
+        window.onload = connectMetamask;
+    </script>
+</head>
+<body style="margin: 0; font-family: Arial, sans-serif; background-color: #0a0c10; color: #e5e8eb;">
+    <!-- Header with Inline CSS -->
+    <header style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #1a1c23;
+        padding: 10px 20px;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    ">
+        <!-- Connected Address -->
+        <div id="metamask-address" style="
+            color: #00bcd4;
+            font-size: 16px;
+            text-align: left;
+            flex: 1;
+        ">
+            Connecting...
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav style="
+            display: flex;
+            gap: 20px;
+            justify-content: flex-end;
+            flex: 2;
+        ">
+            <a href="/" style="
+                color: #e5e8eb;
+                font-size: 16px;
+                text-decoration: none;
+                transition: color 0.3s;
+            " onmouseover="this.style.color='#00bcd4';" onmouseout="this.style.color='#e5e8eb';">Upload</a>
+            <a href="/delete" style="
+                color: #e5e8eb;
+                font-size: 16px;
+                text-decoration: none;
+                transition: color 0.3s;
+            " onmouseover="this.style.color='#00bcd4';" onmouseout="this.style.color='#e5e8eb';">Delete</a>
+            <a href="/transfer" style="
+                color: #e5e8eb;
+                font-size: 16px;
+                text-decoration: none;
+                transition: color 0.3s;
+            " onmouseover="this.style.color='#00bcd4';" onmouseout="this.style.color='#e5e8eb';">Transfer Ownership</a>
+            <a href="/list" style="
+                color: #e5e8eb;
+                font-size: 16px;
+                text-decoration: none;
+                transition: color 0.3s;
+            " onmouseover="this.style.color='#00bcd4';" onmouseout="this.style.color='#e5e8eb';">List Images</a>
+            <a href="/verify" style="
+                color: #e5e8eb;
+                font-size: 16px;
+                text-decoration: none;
+                transition: color 0.3s;
+            " onmouseover="this.style.color='#00bcd4';" onmouseout="this.style.color='#e5e8eb';">Verify</a>
+        </nav>
+    </header>
+   
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@1,400&display=swap" rel="stylesheet">
+    <h1 style="font-family: 'Merriweather', serif; font-style: italic; line-height: 1.5; font-size: 54px;text-align: center; color: #00bcd4; margin-top: 70px;">
+        Cryptex Vault
+    </h1>
+    <!-- Main Content -->
+    <main style="margin-top: 50px; padding: 20px;">
+        <h2>Copyright an Image</h2>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <div id="uploadSection">
+                <input type="file" id="image" name="image" accept="image/*" required style="display:none" onchange="handleImageUpload()">
+                <img src="5798294.png" alt="Upload Icon" id="uploadIcon" class="upload-icon" onclick="document.getElementById('image').click();">
+            </div>
+            <!-- Metadata and Image Preview Section -->
+            <div id="imageDetails" style="display: none; margin-bottom: 20px;">
+                <img id="imagePreview" alt="Image Preview" style="max-width: 100px; max-height: 100px; border-radius: 5px; margin-bottom: 10px;" />
+                <p><strong>Selected Image Name:</strong> <span id="imageName"></span></p>
+                <p><strong>File Size:</strong> <span id="imageSize"></span> KB</p>
+                <p><strong>File Type:</strong> <span id="imageType"></span></p>
+            </div>
+            <div>
+                <button type="button" id="uploadButton" onclick="uploadImage()">Upload</button>
+            </div>
+        </form>
+        <p id="uploadMessage"></p>
+    </main>
+</body>
+</html>

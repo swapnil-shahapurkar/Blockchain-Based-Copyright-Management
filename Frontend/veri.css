@@ -1,0 +1,138 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #0a0c10; /* Deep black background */
+    color: #e5e8eb; /* Light text color */
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: opacity 1.5s;
+}
+
+body.loaded {
+    opacity: 1;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1a1c23; /* Darker black for header */
+    padding: 10px 20px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Connected Address */
+#metamask-address1 {
+    color: #00bcd4; /* Blue accent */
+    font-size: 16px;
+    text-align: left;
+    flex: 1;
+}
+
+/* Navigation Menu */
+nav {
+    display: flex;
+    gap: 20px;
+    justify-content: flex-end;
+    flex: 2;
+}
+
+nav a {
+    color: #e5e8eb;
+    font-size: 16px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #00bcd4; /* Highlight on hover */
+}
+
+/* Heading */
+h2 {
+    margin-top: 80px; /* Ensures spacing below header */
+    font-size: 36px;
+    color: #00bcd4; /* Blue accent */
+    text-align: center;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+/* Input Fields */
+label {
+    color: #e5e8eb;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+input {
+    padding: 8px;
+    border: 1px solid #00bcd4;
+    border-radius: 5px;
+    background-color: #14161b; /* Dark background for input fields */
+    color: #e5e8eb;
+    margin-bottom: 20px;
+    width: 250px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #00bcd4;
+}
+
+/* Center the Button */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers the button */
+    justify-content: center;
+}
+
+/* Button Styling */
+button {
+    background-color: #00bcd4;
+    color: #fff;
+    font-size: 18px;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 30px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background-color: #0097a7;
+    transform: scale(1.05); /* Slight zoom on hover */
+}
+
+/* Response Message */
+#response {
+    color: #e5e8eb;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

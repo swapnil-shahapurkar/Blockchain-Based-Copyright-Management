@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Image Ownership</title>
+   
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@1,400&display=swap" rel="stylesheet">
+    <script>
+       
+        // Verify image ownership by sending the image and owner address to the backend
+        async function verifyOwnership() {
+            const image = document.getElementById('image').files[0];
+           const ownerAddress=localStorage.getItem('uploadOwnerAddress')
+            if (!ownerAddress) {
+                alert('Please connect to Metamask before verifying.');
+                return;
+            }
+
+            if (!image) {
+                alert('Please select an image to verify.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('owner', ownerAddress);  // Use the connected Metamask address as owner
+            formData.append('image', image);  // Append the image file to FormData
+
+            try {
+                const response = await fetch('/verify', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const result = await response.json();
+                document.getElementById('imageDisplay').innerHTML = ''
+                if (response.ok) {
+                    document.getElementById('verifyMessage').innerText = result.message;
+                    if (result.imageUrl) {
+                        const imageElement = document.createElement('img');
+                        imageElement.src = result.imageUrl;
+                        document.getElementById('imageDisplay').appendChild(imageElement);
+                        ;
+                    }
+                } else {
+                    document.getElementById('verifyMessage').innerText = `Error: ${result.error}`;
+                }
+            } catch (error) {
+                console.error('Error verifying image:', error);
+                document.getElementById('verifyMessage').innerText = 'Error verifying image.';
+            }
+        }
+
+        window.onload = connectMetamask;
+    </script>
+
+<link rel="stylesheet" href="veri.css">
+<script>
+    // On page load, retrieve the owner address from localStorage
+    window.onload = function () {
+        const ownerAddress = localStorage.getItem('uploadOwnerAddress');
+        
+        if (ownerAddress) {
+            // Access the element and display the address
+            document.getElementById('metamask-address1').innerText = `Connected: ${ownerAddress}`;
+        } else {
+            document.getElementById('metamask-address1').innerText = 'Not connected to Metamask.';
+        }
+    }
+</script>
+
+
+
+</head>
+<body style="margin: 0; font-family: Arial, sans-serif; background-color: #0a0c10; color: #e5e8eb;">
+<!-- Header with Inline CSS -->
+<header style="
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1a1c23;
+    padding: 10px 20px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+">
+    <!-- Connected Address -->
+    <div id="metamask-address1" style="
+        color: #00bcd4;
+        font-size: 16px;
+        text-align: left;
+        flex: 1;
+    ">
+        Connecting...
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav style="
+        display: flex;
+        gap: 20px;
+        justify-content: flex-end;
+        flex: 2;
+    ">
+        <a href="/" style="
+            color: #e5e8eb;
+            font-size: 16px;
+            text-decoration: none;
+            transition: color 0.3s;
+        " onmouseover="this.style.color='#00bcd4';" onmouseout="this.style.color='#e5e8eb';">Upload</a>
+        <a href="/delete" style="
+            color: #e5e8eb;
+            font-size: 16px;
+            text-decoration: none;
+            transition: color 0.3s;
+        " onmouseover="this.style.color='#00bcd4';" onmouseout="this.style.color='#e5e8eb';">Delete</a>
+        <a href="/transfer" style="
+            color: #e5e8eb;
+            font-size: 16px;
+            text-decoration: none;
+            transition: color 0.3s;
+        " onmouseover="this.style.color='#00bcd4';" onmouseout="this.style.color='#e5e8eb';">Transfer Ownership</a>
+        <a href="/list" style="
+            color: #e5e8eb;
+            font-size: 16px;
+            text-decoration: none;
+            transition: color 0.3s;
+        " onmouseover="this.style.color='#00bcd4';" onmouseout="this.style.color='#e5e8eb';">List Images</a>
+        <a href="/verify" style="
+            color: #e5e8eb;
+            font-size: 16px;
+            text-decoration: none;
+            transition: color 0.3s;
+        " onmouseover="this.style.color='#00bcd4';" onmouseout="this.style.color='#e5e8eb';">Verify</a>
+    </nav>
+</header>
+    <main>
+       
+        <h2 style="font-family: 'Merriweather', serif; font-style: italic; line-height: 1.5; font-size: 36px;">
+            Verify Image Ownership
+        </h2>
+
+        <form id="verifyForm" enctype="multipart/form-data">
+            <div style="margin-top: 30px;">
+                <label for="image">Choose Image</label>
+                <input type="file" id="image" name="image" accept="image/*" required>
+            </div>
+            <div>
+                <button type="button" onclick="verifyOwnership()">Verify Ownership</button>
+            </div>
+        </form>
+        <p id="verifyMessage" style="margin-top: 20px; margin-bottom: 20px;"></p>
+
+        <div id="imageDisplay" style="text-align: center; margin: 20px;">
+            <img src="your-image-url.jpg" alt="" style="max-width: 80%; height: auto; border: 1px solid #ccc; border-radius: 8px;">
+        </div>
+        
+    </main>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List All Images</title>
+    <link rel="stylesheet" href="lis.css">
+    <script>
+        // On page load, retrieve the owner address from localStorage
+        window.onload = function () {
+            const ownerAddress = localStorage.getItem('uploadOwnerAddress');
+            
+            if (ownerAddress) {
+                // Access the element and display the address
+                document.getElementById('metamask-address1').innerText = `Connected: ${ownerAddress}`;
+            } else {
+                document.getElementById('metamask-address1').innerText = 'Not connected to Metamask.';
+            }
+        }
+    </script>
+</head>
+<body>
+    <!-- Header with Inline CSS -->
+    <header>
+        <!-- Connected Address -->
+        <div id="metamask-address1">
+            Connecting...
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav>
+            <a href="/">Upload</a>
+            <a href="/delete">Delete</a>
+            <a href="/transfer">Transfer Ownership</a>
+            <a href="/list">List Images</a>
+            <a href="/verify">Verify</a>
+        </nav>
+    </header>
+
+   
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@1,400&display=swap" rel="stylesheet">
+    <h1 style="font-family: 'Merriweather', serif; font-style: italic; line-height: 1.5;">
+        List of Copyrighted Images
+    </h1>
+    <div id="imageList"></div>
+
+    <script>
+        // (same as previous script for fetching images)
+        async function fetchImages() {
+            const ethereumAddress = await getMetaMaskAddress();
+            
+            if (ethereumAddress) {
+                // Send the Ethereum address as a header in the request
+                fetch("http://localhost:3000/images", {
+                    method: "GET",
+                    headers: {
+                        "Ethereum-Address": ethereumAddress // Sending Ethereum address in headers
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        const imageList = document.getElementById("imageList");
+                        imageList.innerHTML = ''; // Clear any previous content
+
+                        // Check if there are any images
+                        if (data.length === 0) {
+                            imageList.innerHTML = "<p>No images found for this address.</p>";
+                        }
+
+                        // Display the images
+                        data.forEach(image => {
+                            const imageItem = document.createElement("div");
+                            imageItem.className = "image-item";
+
+                            // Fetch the image data from the backend and display it
+                            fetch(`http://localhost:3000/image/${image.hash}`)
+                                .then(response => response.blob()) // Convert to Blob
+                                .then(imageBlob => {
+                                    // Create a URL for the image blob
+                                    const imageUrl = URL.createObjectURL(imageBlob);
+
+                                    // Add the image preview
+                                    const imgElement = document.createElement("img");
+                                    imgElement.src = imageUrl; // Set Blob URL as the image source
+                                    imgElement.alt = `Image: ${image.filename}`;
+
+                                    // Add metadata
+                                    const metadata = document.createElement("p");
+                                    metadata.innerHTML = `
+                                        <strong>Filename:</strong> ${image.filename}<br>
+                                        <strong>Hash:</strong> ${image.hash}<br>
+                                        <strong>Owner:</strong> ${image.owner}
+                                    `;
+
+                                    // Append image and metadata to the container
+                                    imageItem.appendChild(imgElement);
+                                    imageItem.appendChild(metadata);
+
+                                    // Append the container to the image list
+                                    imageList.appendChild(imageItem);
+                                })
+                                .catch(error => console.error("Error fetching image:", error));
+                        });
+                    })
+                    .catch(error => {
+                        console.error("Error fetching images:", error);
+                        alert("Error fetching images.");
+                    });
+            }
+        }
+
+        // Function to check if MetaMask is connected
+        async function getMetaMaskAddress() {
+            if (typeof window.ethereum !== 'undefined') {
+                const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                return accounts[0]; // Return the first connected Ethereum account
+            } else {
+                alert("Please install MetaMask.");
+                return null;
+            }
+        }
+
+        // Call the function to fetch images
+        fetchImages();
+    </script>
+</body>
+</html>

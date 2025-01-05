@@ -1,0 +1,203 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #0a0c10; /* Deep black background */
+    color: #e5e8eb; /* Light text color */
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: opacity 1.5s;
+}
+
+body.loaded {
+    opacity: 1;
+}
+
+/* Header */
+header {
+    width: 100%;
+    background-color: #1a1c23; /* Darker black for header */
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+#metamask-address {
+    color: #00bcd4; /* Blue accent */
+    font-size: 16px;
+    text-align: left;
+    flex: 1; /* Aligns it to the left */
+}
+
+nav {
+    display: flex;
+    gap: 20px;
+    flex: 2; /* Pushes it to the right */
+    justify-content: flex-end;
+}
+
+nav a {
+    color: #e5e8eb;
+    font-size: 16px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #00bcd4; /* Highlight on hover */
+}
+
+/* Title */
+#page-title {
+    margin-top: 80px; /* Ensures spacing below header */
+    font-size: 36px;
+    color: #00bcd4; /* Blue accent */
+    text-align: center;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+/* Main Content */
+main {
+    background-color: #14161b; /* Black with blue hue */
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    width: 400px;
+    margin-top: 20px;
+    animation: fadeInUp 1.5s ease-out;
+}
+
+h2 {
+    color: #e5e8eb;
+    margin-bottom: 20px;
+}
+
+.upload-icon {
+    cursor: pointer;
+    width: 80px;
+    height: 80px;
+    border: 2px dashed #00bcd4;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.upload-icon:hover {
+    transform: scale(1.1);
+}
+
+#uploadButton {
+    background-color: #00bcd4;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+#uploadButton:hover {
+    background-color: #009dbf;
+    transform: scale(1.05);
+}
+
+#uploadMessage {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #66ff66;
+}
+/* Main container styling */
+main {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Upload icon container */
+.upload-icon {
+    width: 150px; /* Increased size */
+    height: 150px; /* Increased size */
+    margin: 20px auto; /* Centered with space above and below */
+    cursor: pointer;
+    border: 2px dashed #00bcd4;
+    border-radius: 10px;
+    padding: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.upload-icon:hover {
+    transform: scale(1.1); /* Zoom effect on hover */
+    box-shadow: 0 4px 15px rgba(0, 188, 212, 0.6); /* Glow effect */
+}
+
+/* File input (hidden) */
+#image {
+    display: none;
+}
+
+/* Button styling */
+#uploadButton {
+    background-color: #00bcd4;
+    color: #fff;
+    font-size: 18px; /* Larger text size */
+    padding: 15px 30px; /* Bigger button */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 30px; /* Increased spacing between the icon and the button */
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#uploadButton:hover {
+    background-color: #0097a7;
+    transform: scale(1.05); /* Slight zoom on hover */
+}
+
+/* Upload message */
+#uploadMessage {
+    color: #e5e8eb;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+h1{
+    margin-top: 80px; /* Ensures spacing below header */
+    font-size: 36px;
+    color: #00bcd4; /* Blue accent */
+    text-align: center;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

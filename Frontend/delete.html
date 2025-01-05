@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Image</title>
+    <link rel="stylesheet" href="del.css">
+    <script>
+        // On page load, retrieve the owner address from localStorage
+        window.onload = function () {
+            const ownerAddress = localStorage.getItem('uploadOwnerAddress');
+            
+            if (ownerAddress) {
+                // Access the element and display the address
+                document.getElementById('metamask-address1').innerText = `Connected: ${ownerAddress}`;
+            } else {
+                document.getElementById('metamask-address1').innerText = 'Not connected to Metamask.';
+            }
+        }
+    </script>
+
+
+
+</head>
+<body style="margin: 0; font-family: Arial, sans-serif; background-color: #0a0c10; color: #e5e8eb;">
+    <!-- Header with Inline CSS -->
+    <header style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #1a1c23;
+        padding: 10px 20px;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    ">
+        <!-- Connected Address -->
+        <div id="metamask-address1" style="
+            color: #00bcd4;
+            font-size: 16px;
+            text-align: left;
+            flex: 1;
+        ">
+            Connecting...
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav style="
+            display: flex;
+            gap: 20px;
+            justify-content: flex-end;
+            flex: 2;
+        ">
+            <a href="/" style="
+                color: #e5e8eb;
+                font-size: 16px;
+                text-decoration: none;
+                transition: color 0.3s;
+            " onmouseover="this.style.color='#00bcd4';" onmouseout="this.style.color='#e5e8eb';">Upload</a>
+            <a href="/delete" style="
+                color: #e5e8eb;
+                font-size: 16px;
+                text-decoration: none;
+                transition: color 0.3s;
+            " onmouseover="this.style.color='#00bcd4';" onmouseout="this.style.color='#e5e8eb';">Delete</a>
+            <a href="/transfer" style="
+                color: #e5e8eb;
+                font-size: 16px;
+                text-decoration: none;
+                transition: color 0.3s;
+            " onmouseover="this.style.color='#00bcd4';" onmouseout="this.style.color='#e5e8eb';">Transfer Ownership</a>
+            <a href="/list" style="
+                color: #e5e8eb;
+                font-size: 16px;
+                text-decoration: none;
+                transition: color 0.3s;
+            " onmouseover="this.style.color='#00bcd4';" onmouseout="this.style.color='#e5e8eb';">List Images</a>
+            <a href="/verify" style="
+                color: #e5e8eb;
+                font-size: 16px;
+                text-decoration: none;
+                transition: color 0.3s;
+            " onmouseover="this.style.color='#00bcd4';" onmouseout="this.style.color='#e5e8eb';">Verify</a>
+        </nav>
+    </header>
+
+    
+    
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@1,400&display=swap" rel="stylesheet">
+    <h1 style="font-family: 'Merriweather', serif; font-style: italic; line-height: 1.5;">
+        Delete an Image
+    </h1>
+    <label for="hash" style="margin-top: 30px;">Image Hash:</label>
+    <input type="text" id="hash" name="hash" required><br><br>
+    <button onclick="deleteImage()">Delete Image</button>
+
+    <div id="response"></div>
+    
+    <script>
+   
+        async function deleteImage() {
+            const hash = document.getElementById("hash").value;
+            // Get the current Ethereum address (from MetaMask)
+            const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+            const currentOwner = accounts[0];
+
+            // Send the hash and current Ethereum address to the backend
+            fetch(`http://localhost:3000/image/${hash}/delete`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ hash: hash, currentOwner: currentOwner }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("response").textContent = data.message || data.error;
+            })
+            .catch(error => console.error("Error deleting image:", error));
+        }
+    </script>
+</body>
+</html>

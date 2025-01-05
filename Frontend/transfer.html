@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfer Ownership</title>
+    <link rel="stylesheet" href="tra.css">
+    <script>
+        // On page load, retrieve the owner address from localStorage
+        window.onload = function () {
+            const ownerAddress = localStorage.getItem('uploadOwnerAddress');
+            
+            if (ownerAddress) {
+                // Access the element and display the address
+                document.getElementById('metamask-address1').innerText = `Connected: ${ownerAddress}`;
+            } else {
+                document.getElementById('metamask-address1').innerText = 'Not connected to Metamask.';
+            }
+        }
+    </script>
+</head>
+<body style="margin: 0; font-family: Arial, sans-serif; background-color: #0a0c10; color: #e5e8eb;">
+    <!-- Header with Inline CSS -->
+    <header style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #1a1c23;
+        padding: 10px 20px;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    ">
+        <!-- Connected Address -->
+        <div id="metamask-address1" style="
+            color: #00bcd4;
+            font-size: 16px;
+            text-align: left;
+            flex: 1;
+        ">
+            Connecting...
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav style="
+            display: flex;
+            gap: 20px;
+            justify-content: flex-end;
+            flex: 2;
+        ">
+            <a href="/" style="
+                color: #e5e8eb;
+                font-size: 16px;
+                text-decoration: none;
+                transition: color 0.3s;
+            " onmouseover="this.style.color='#00bcd4';" onmouseout="this.style.color='#e5e8eb';">Upload</a>
+            <a href="/delete" style="
+                color: #e5e8eb;
+                font-size: 16px;
+                text-decoration: none;
+                transition: color 0.3s;
+            " onmouseover="this.style.color='#00bcd4';" onmouseout="this.style.color='#e5e8eb';">Delete</a>
+            <a href="/transfer" style="
+                color: #e5e8eb;
+                font-size: 16px;
+                text-decoration: none;
+                transition: color 0.3s;
+            " onmouseover="this.style.color='#00bcd4';" onmouseout="this.style.color='#e5e8eb';">Transfer Ownership</a>
+            <a href="/list" style="
+                color: #e5e8eb;
+                font-size: 16px;
+                text-decoration: none;
+                transition: color 0.3s;
+            " onmouseover="this.style.color='#00bcd4';" onmouseout="this.style.color='#e5e8eb';">List Images</a>
+            <a href="/verify" style="
+                color: #e5e8eb;
+                font-size: 16px;
+                text-decoration: none;
+                transition: color 0.3s;
+            " onmouseover="this.style.color='#00bcd4';" onmouseout="this.style.color='#e5e8eb';">Verify</a>
+        </nav>
+    </header>
+   
+
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@1,400&display=swap" rel="stylesheet">
+    <h1 style="font-family: 'Merriweather', serif; font-style: italic; line-height: 1.5;">
+        Transfer Image Ownership
+    </h1>
+    
+    <!-- Input fields for transferring ownership -->
+    <label for="hash" style="margin-top: 30px;">Image Hash:</label>
+    <input type="text" id="hash" name="hash" required><br><br>
+
+    <label for="newOwner">New Owner (Ethereum Address):</label>
+    <input type="text" id="newOwner" name="newOwner" required><br><br>
+
+    <button onclick="transferOwnership()">Transfer Ownership</button>
+
+    <div id="response"></div>
+
+    <script>
+        // Ensure MetaMask is connected
+        async function getCurrentOwner() {
+            if (window.ethereum) {
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                return accounts[0]; // Return the first account
+            } else {
+                alert("Please install MetaMask to use this feature.");
+            }
+        }
+
+        async function transferOwnership() {
+            const hash = document.getElementById("hash").value;
+            const newOwner = document.getElementById("newOwner").value;
+
+            try {
+                const currentOwner = await getCurrentOwner(); // Get the current owner's Ethereum address
+
+                const response = await fetch(`http://localhost:3000/image/transfer/${hash}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ currentOwner, newOwner }),
+                });
+
+                const data = await response.json();
+                document.getElementById("response").textContent = data.message || data.error;
+            } catch (error) {
+                console.error("Error transferring ownership:", error);
+                document.getElementById("response").textContent = "Error transferring ownership.";
+            }
+        }
+    </script>
+</body>
+</html>
